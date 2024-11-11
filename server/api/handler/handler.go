@@ -31,7 +31,31 @@ func GetFiles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("resource requested for %s in %s", r.RemoteAddr, cleanedFilename)
+	fileStream, err := os.Open(file)
+	if err != nil {
+		log.Printf("Error opening file %s: %v", cleanedFilename, err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+	defer fileStream.Close()
+
+	buffer := make([]byte, 512)
+	_, err = fileStream.Read(buffer)
+	if err != nil {
+		log.Printf("Error reading file %s: %v", cleanedFilename, err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	contentType := http.DetectContentType(buffer)
+
+	if contentType == "application/octet-stream" {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	} else {
+		w.Header().Set("Content-Type", contentType)
+	}
+
+	log.Printf("resource requested for %s in %s, type %s", r.RemoteAddr, cleanedFilename, contentType)
 	http.ServeFile(w, r, file)
 }
 
@@ -81,7 +105,6 @@ func UploadFiles(w http.ResponseWriter, r *http.Request) {
 		}); err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
-
 }
 
 func ListDir(w http.ResponseWriter, r *http.Request) {
