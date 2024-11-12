@@ -1,6 +1,6 @@
 package dirs
 
 type DirectoryStructure struct {
-	Dirs  []string
-	Files []string
+	Dirs  []string `json:"dirs"`
+	Files []string `json:"files"`
 }
