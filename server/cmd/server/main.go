@@ -24,7 +24,12 @@ func init() {
 	var err error
 	db, err = database.GetConnection()
 	if err != nil {
-		log.Fatalln("Error to connect database")
+		log.Fatalf("Error to connect database: %v", err)
+	}
+
+	err = database.Migrate(db)
+	if err != nil {
+		log.Fatalf("Error to migrate database: %v", err)
 	}
 }
 
