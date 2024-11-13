@@ -39,12 +39,14 @@ func main() {
 
 	route := router.NewRouter()
 
+	indexPage := &handler.Index{}
 	getFiles := &handler.GetFiles{PathDir: PATH_DIR}
 	uploadFiles := &handler.UploadFiles{PathDir: PATH_DIR}
 	listDir := &handler.ListDir{PathDir: PATH_DIR}
 	login := &handler.Login{DB: db}
 	register := &handler.Register{DB: db}
 
+	route.Get("/", nil, indexPage)
 	route.Get("/fs/", middleware.AuthMiddleware, getFiles)
 	route.Put("/fs/upload/", middleware.AuthMiddleware, uploadFiles)
 	route.Get("/list/", middleware.AuthMiddleware, listDir)
