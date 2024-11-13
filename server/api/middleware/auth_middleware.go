@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -17,8 +16,6 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			return
 		}
 		tokenString := authorization[len("Bearer "):]
-
-		fmt.Printf("header %s, token %s\n", authorization, tokenString)
 
 		_, err := util.ValidateToken(tokenString)
 		if err != nil {
