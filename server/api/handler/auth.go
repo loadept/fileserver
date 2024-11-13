@@ -3,6 +3,7 @@ package handler
 import (
 	"database/sql"
 	"errors"
+	"io"
 	"log"
 	"net/http"
 
@@ -27,6 +28,10 @@ func (h *Login) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("Error validating request: %v", err)
 
+		if err == io.EOF {
+			response.JsonErrorFromString(w, "Request body is required", http.StatusBadRequest)
+			return
+		}
 		var fieldErr *auth.FieldRequiredError
 		if errors.As(err, &fieldErr) {
 			response.JsonErrorFromString(w, err.Error(), http.StatusBadRequest)
@@ -73,6 +78,10 @@ func (h *Register) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("Error validating request: %v", err)
 
+		if err == io.EOF {
+			response.JsonErrorFromString(w, "Request body is required", http.StatusBadRequest)
+			return
+		}
 		var fieldErr *auth.FieldRequiredError
 		if errors.As(err, &fieldErr) {
 			response.JsonErrorFromString(w, err.Error(), http.StatusBadRequest)
