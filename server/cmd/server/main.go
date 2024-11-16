@@ -47,7 +47,7 @@ func main() {
 	register := &handler.Register{DB: db}
 
 	route.Get("/", nil, indexPage)
-	route.Get("/fs/", middleware.AuthMiddleware, getFiles)
+	route.Get("/fs/", middleware.AuthMiddlewareQuery, getFiles)
 	route.Put("/fs/upload/", middleware.AuthMiddleware, uploadFiles)
 	route.Get("/list/", middleware.AuthMiddleware, listDir)
 	route.Post("/login", nil, login)

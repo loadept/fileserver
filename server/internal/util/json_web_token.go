@@ -15,7 +15,7 @@ func CreateToken(id string, username string) (string, error) {
 		UserId:   id,
 		Username: username,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
+			ExpiresAt: time.Now().Add(time.Minute * 15).Unix(),
 			Issuer:    "jsusmachaca",
 		},
 	}
