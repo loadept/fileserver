@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/jsusmachaca/fileserver/pkg/dirs"
+	dirs "github.com/jsusmachaca/fileserver/pkg/file_system"
 	"github.com/jsusmachaca/go-router/pkg/response"
 )
 
@@ -19,8 +19,8 @@ func (h *ListDir) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	pathDir := h.PathDir
 
 	var FileSystem dirs.DirectoryStructure
-	FileSystem.Dirs = []string{}
-	FileSystem.Files = []string{}
+	FileSystem.Dirs = []dirs.Content{}
+	FileSystem.Files = []dirs.Content{}
 
 	directories := r.URL.Path[6:]
 	cleanedFilename := filepath.Clean(directories)
@@ -56,13 +56,19 @@ func (h *ListDir) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if data.Type().IsDir() {
 			FileSystem.Dirs = append(
 				FileSystem.Dirs,
-				fmt.Sprintf("%s/list/%s", baseURL, filepath.Join(cleanedFilename, data.Name())),
+				dirs.Content{
+					URL:  fmt.Sprintf("%s/list/%s", baseURL, filepath.Join(cleanedFilename, data.Name())),
+					Name: data.Name(),
+				},
 			)
 			continue
 		}
 		FileSystem.Files = append(
 			FileSystem.Files,
-			fmt.Sprintf("%s/fs/%s", baseURL, filepath.Join(cleanedFilename, data.Name())),
+			dirs.Content{
+				URL:  fmt.Sprintf("%s/fs/%s", baseURL, filepath.Join(cleanedFilename, data.Name())),
+				Name: data.Name(),
+			},
 		)
 	}
 	response.JsonResponse(w, FileSystem, http.StatusAccepted)
