@@ -48,8 +48,8 @@ func main() {
 
 	route.Get("/", indexPage)
 	route.Get("/fs/", getFiles, middleware.AuthMiddlewareQuery)
-	route.Put("/fs/upload/", uploadFiles, middleware.AuthMiddleware)
-	route.Options("/list/", listDir, middleware.AuthMiddleware)
+	route.Put("/fs/upload", uploadFiles, middleware.AuthMiddleware)
+	route.Get("/list/", listDir, middleware.AuthMiddleware)
 	route.Post("/login", login)
 	route.Post("/register", register)
 
