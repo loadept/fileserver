@@ -1,0 +1,64 @@
+---
+import axios from "axios"
+import Layout from '../layouts/Layout.astro'
+import type { FileSystemResponse } from "../types/global"
+import Gallery from '../components/Gallery.astro'
+import MenuLateral from "../components/MenuLateral.astro"
+
+const cookie = Astro.cookies.get('Authentication')
+if (!cookie?.value) {
+  console.log('aqui')
+  return Astro.redirect('/login')
+}
+
+const dirs = Astro.url.searchParams
+console.log(dirs)
+
+let currentDirectory = 'http://127.0.0.1:8080/list'
+
+const fetchContent = async (dir: string) => {
+  const res = await axios.get<FileSystemResponse>(dir, {
+    headers: {
+      Authorization: `Bearer ${cookie.value}`
+    }
+  })
+  return res.data
+}
+
+const res = await fetchContent(currentDirectory)
+
+const resources = res.files.map((file) => {
+  const fileType = file.name.split('.').pop()?.toLowerCase()
+  const isImage = ['jpg', 'jpeg', 'png', 'gif', 'avif', 'webp'].includes(fileType!)
+  const isVideo = ['mp4', 'mov', 'avi', 'webm', 'mkv', 'wav'].includes(fileType!)
+
+  if (isImage) {
+    return {
+      type: 'image',
+      url: file.url,
+      text: file.name
+    }
+  } else if (isVideo) {
+      return {
+        type: 'video',
+        url: file.url,
+        text: file.name
+      }
+  } else {
+    return {
+      type: 'file',
+      url: file.url,
+      text: file.name
+    }
+  }
+})
+---
+
+<Layout title='Jesus Machaca File System Server' description='bro'>
+  <main class='flex min-h-screen  text-gray-100'>
+    <MenuLateral directories={res.dirs} />
+    <section class='flex-1 ml-64'>
+      <Gallery resources={resources} token={cookie.value} />
+    </section>
+  </main>
+</Layout>

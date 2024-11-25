@@ -1,0 +1,35 @@
+---
+import type { Resource } from '../types/props'
+import FileIcon from './icons/FileIcon.astro'
+
+export interface Props {
+	resource: Resource
+	token: string
+}
+
+const { resource, token } = Astro.props;
+---
+
+<div class='flex flex-col items-center cursor-pointer'>
+  {resource.type === 'image' ? (
+      <img 
+        class='w-72 h-52 object-cover shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 rounded-lg'
+        src={`${resource.url}?token=${token}`} 
+        loading="lazy"
+      />
+    ) : resource.type === 'video' ? (
+      <video 
+        class='w-72 h-52 object-cover shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 rounded-lg'
+        src={`${resource.url}?token=${token}`}
+        muted
+        controls
+      >
+      </video>
+    ) : (
+      <div class='w-72 h-52 flex items-center justify-center bg-gray-700 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 rounded-lg'>
+        {/* <embed src={`${resource.url}?token=${token}`} type="application/pdf"> */}
+        <FileIcon />
+      </div>
+    )}
+  <p class='mt-2 text-center text-sm font-medium text-gray-100'>{resource.text}</p>
+</div>
