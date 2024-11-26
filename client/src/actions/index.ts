@@ -1,6 +1,7 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro:schema'
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
+import apiClient from '../config/apiClient'
 
 export const server = {
   login: defineAction({
@@ -11,15 +12,18 @@ export const server = {
     }),
     handler: async ({ username, password }) => {
       try {
-        console.log(username, password)
-        const res = await axios.post('http://localhost:8080/login', {
+        const res = await apiClient.post('/login', {
           username: username,
           password: password
         })
 
         return { token: res.data.token }
       } catch (err) {
-        console.log((err as AxiosError).response?.data)
+        if (err instanceof AxiosError) {
+          console.log('Error:', (err as AxiosError).response?.data)
+        } else {
+          console.log('Error:', err)
+        }
         throw new ActionError({
           code: 'UNAUTHORIZED',
           message: 'Incorrect Credentials'

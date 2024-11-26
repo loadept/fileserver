@@ -1,0 +1,93 @@
+---
+import type { Content } from '../types/global'
+import DirectoryIcon from './icons/DirectoryIcon.astro'
+
+interface Props {
+  directories: Content[]
+}
+const { directories } = Astro.props
+---
+<aside id='side-menu' class='fixed left-0 top-0 h-full w-64 bg-gray-800 z-10 overflow-y-auto'>
+  <button 
+    id='toggle-menu'
+    class='absolute right-2 top-2 p-2 text-gray-300 hover:text-gray-100 outline-none'
+    aria-label='Close menu'
+  >
+    <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='w-6 h-6'>
+      <polyline points='15 18 9 12 15 6'></polyline>
+    </svg>
+  </button>
+  <nav class='mt-8 p-4'>
+    <ul class='space-y-4'>
+      {directories.map(directorio => (
+        <li>
+          <button
+            id='button-dir'
+            data-url={directorio.url}
+            data-name={directorio.name}
+            class='flex items-center space-x-2 text-gray-300 hover:text-gray-100 directory-link transition-all hover:scale-110'>
+            <DirectoryIcon />
+            <span>{directorio.name}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</aside>
+
+<script>
+  const sideMenu = document.getElementById('side-menu')
+  const mainContent = document.getElementById('main-content')
+  const toggleMenuButton = document.getElementById('toggle-menu')
+  const buttonDir = document.querySelectorAll('#button-dir')
+
+  function toggleMenu() {
+    console.log(mainContent)
+
+    const isOpen = sideMenu!.classList.contains('w-64')
+    sideMenu!.classList.toggle('w-64')
+    sideMenu!.classList.toggle('w-16')
+    mainContent!.classList.toggle('ml-64')
+    mainContent!.classList.toggle('ml-10')
+
+    if (isOpen) {
+      toggleMenuButton!.innerHTML = `
+        <svg
+          fill='none'
+          viewBox='0 0 24 24'
+          stroke='currentColor'
+          class='w-6 h-6'
+        >
+          <path
+            stroke-linecap='round'
+            stroke-linejoin='round'
+            stroke-width='2'
+            d='M4 6h16M4 12h16M4 18h16'
+          />
+        </svg>
+      `
+      toggleMenuButton!.setAttribute('aria-label', 'Open menu')
+    } else {
+      toggleMenuButton!.innerHTML = `
+        <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='w-6 h-6'>
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      `
+      toggleMenuButton!.setAttribute('aria-label', 'Close menu')
+    }
+
+    const menuItems = sideMenu!.querySelectorAll('button span')
+    menuItems.forEach(item => item.classList.toggle('sr-only'))
+  }
+
+  toggleMenuButton!.addEventListener('click', toggleMenu)
+  buttonDir.forEach(button => {
+    button?.addEventListener('click', async () => {
+      const path = window.location.pathname
+      const dirName = button.getAttribute('data-name')!
+      const newPath = `${path.replace(/\/$/, '')}/${dirName.replace(/^\//, '')}`
+
+      window.location.href = newPath
+    })
+  })
+</script>

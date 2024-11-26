@@ -22,12 +22,10 @@ const { resource, token } = Astro.props;
         class='w-72 h-52 object-cover shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 rounded-lg'
         src={`${resource.url}?token=${token}`}
         muted
-        controls
       >
       </video>
     ) : (
-      <div class='w-72 h-52 flex items-center justify-center bg-gray-700 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 rounded-lg'>
-        {/* <embed src={`${resource.url}?token=${token}`} type="application/pdf"> */}
+      <div class='w-72 h-52 flex items-center justify-center shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 rounded-lg bg-gray-700'>
         <FileIcon />
       </div>
     )}

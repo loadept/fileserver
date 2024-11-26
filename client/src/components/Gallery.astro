@@ -1,6 +1,9 @@
 ---
-import type { Resource } from "../types/props"
-import FileItem from "./FileItem.astro"
+import type { Resource } from '../types/props'
+import FileItem from './FileItem.astro'
+import ArrowLeftIcon from './icons/ArrowLeftIcon.astro'
+import ArrowRightIcon from './icons/ArrowRightIcon.astro'
+import Modal from './Modal.astro'
 
 interface Props {
   resources: Resource[]
@@ -10,9 +13,67 @@ interface Props {
 const { resources, token } = Astro.props
 ---
 <div class='container mx-auto px-4 py-8'>
-  <div class='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-      {resources.map((resource) => (
-        <FileItem resource={resource} token={token} />
-      ))}
+  <div class='flex items-center justify-around mb-8'>
+    <button id='prev-button' class='mr-4 text-gray-300 hover:text-gray-100 outline-none' aria-label='Back to previous page'>
+      <ArrowLeftIcon />
+    </button>
+    <button id='next-button' class='mr-4 text-gray-300 hover:text-gray-100 outline-none' aria-label='Back to next page'>
+      <ArrowRightIcon />
+    </button>
   </div>
+  <div class='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+    {resources.map((resource) => (
+      <div data-item={JSON.stringify(resource)} data-token={token}>
+        <FileItem resource={resource} token={token} />
+      </div>
+    ))}
+  </div>
+  <Modal />
 </div>
+
+<script>
+  const prevButton = document.getElementById('prev-button') 
+  const nextButton = document.getElementById('next-button')
+  const modal = document.getElementById('modal')
+  const modalContent = document.getElementById('modal-content')
+
+  prevButton?.addEventListener('click', () => {
+    window.history.back()
+  })
+  nextButton?.addEventListener('click', () => {
+    window.history.forward()
+  })
+
+  document.querySelectorAll('[data-item]').forEach(item => {
+    const token = item.getAttribute('data-token')
+
+    item.addEventListener('click', () => {
+      const itemData = JSON.parse(item.getAttribute('data-item')!)
+      if (modal && modalContent) {
+        modalContent.innerHTML = itemData.type === 'image' ? (
+          `<img src='${itemData.url}?token=${token}' alt='${itemData.text || itemData.text}' class='max-w-full h-auto rounded-lg' />`
+        ) : itemData.type === 'video' ? (
+          `<video src='${itemData.url}?token=${token}' controls class='max-w-full h-auto rounded-lg' />`
+        ) : (
+          `<div class='flex flex-col items-center'>
+            <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='w-12 h-12'>
+              <path d='M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z'></path>
+              <polyline points='13 2 13 9 20 9'></polyline>
+            </svg>
+            <p class='mt-4 text-lg font-semibold text-gray-100'>${itemData.text}</p>
+            <a href='${itemData.url}?token=${token}' download target='_blank' class='mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors'>
+              Descargar archivo
+            </a>
+          </div>`
+        )
+        modal.classList.remove('hidden')
+      }
+    })
+  })
+
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.add('hidden')
+    }
+  })
+</script>
