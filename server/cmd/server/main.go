@@ -45,11 +45,11 @@ func main() {
 	login := &handler.Login{DB: db}
 	register := &handler.Register{DB: db}
 
-	route.Get("/fs/", getFiles, middleware.AuthMiddlewareQuery)
-	route.Put("/fs/upload", uploadFiles, middleware.AuthMiddleware)
-	route.Get("/list/", listDir, middleware.AuthMiddleware)
-	route.Post("/login", login)
-	route.Post("/register", register)
+	route.Get("/api/fs/", getFiles, middleware.AuthMiddlewareQuery)
+	route.Put("/api/fs/upload", uploadFiles, middleware.AuthMiddleware)
+	route.Get("/api/list/", listDir, middleware.AuthMiddleware)
+	route.Post("/api/login", login)
+	route.Post("/api/register", register)
 
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%s", PORT),

@@ -22,7 +22,7 @@ func (h *ListDir) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	FileSystem.Dirs = []dirs.Content{}
 	FileSystem.Files = []dirs.Content{}
 
-	directories := r.URL.Path[6:]
+	directories := r.URL.Path[len("/api/list/"):]
 	cleanedFilename := filepath.Clean(directories)
 	fullPath := filepath.Join(pathDir, cleanedFilename)
 
@@ -34,7 +34,7 @@ func (h *ListDir) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	if !stat.IsDir() {
 		log.Printf("Error, directory by %s was requested at %s: %s", r.RemoteAddr, cleanedFilename, err)
-		http.Redirect(w, r, "/fs/"+cleanedFilename, http.StatusMovedPermanently)
+		http.Redirect(w, r, "/api/fs/"+cleanedFilename, http.StatusMovedPermanently)
 		return
 	}
 
@@ -57,7 +57,7 @@ func (h *ListDir) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			FileSystem.Dirs = append(
 				FileSystem.Dirs,
 				dirs.Content{
-					URL:  fmt.Sprintf("%s/list/%s", baseURL, filepath.Join(cleanedFilename, data.Name())),
+					URL:  fmt.Sprintf("%s/api/list/%s", baseURL, filepath.Join(cleanedFilename, data.Name())),
 					Name: data.Name(),
 				},
 			)
@@ -66,7 +66,7 @@ func (h *ListDir) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		FileSystem.Files = append(
 			FileSystem.Files,
 			dirs.Content{
-				URL:  fmt.Sprintf("%s/fs/%s", baseURL, filepath.Join(cleanedFilename, data.Name())),
+				URL:  fmt.Sprintf("%s/api/fs/%s", baseURL, filepath.Join(cleanedFilename, data.Name())),
 				Name: data.Name(),
 			},
 		)

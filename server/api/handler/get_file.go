@@ -16,7 +16,7 @@ type GetFiles struct {
 func (h *GetFiles) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	pathDir := h.PathDir
 
-	filename := r.URL.Path[len("/fs/"):]
+	filename := r.URL.Path[len("/api/fs/"):]
 	cleanedFilename := filepath.Clean(filename)
 	file := filepath.Join(pathDir, cleanedFilename)
 
@@ -28,7 +28,7 @@ func (h *GetFiles) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	if fileStat.IsDir() {
 		log.Printf("Error, directory by %s was requested at %s: %s", r.RemoteAddr, cleanedFilename, err)
-		http.Redirect(w, r, "/list/"+cleanedFilename, 301)
+		http.Redirect(w, r, "/api/list/"+cleanedFilename, 301)
 		return
 	}
 
