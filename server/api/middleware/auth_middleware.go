@@ -17,10 +17,15 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		}
 		tokenString := authorization[len("Bearer "):]
 
-		_, err := util.ValidateToken(tokenString)
+		claims, err := util.ValidateToken(tokenString)
 		if err != nil {
 			log.Println(err.Error())
 			response.JsonErrorFromString(w, "Invalid or expired token", http.StatusUnauthorized)
+			return
+		}
+		if claims["is_admin"] != true {
+			log.Printf("An unprivileged user attempted to access: %s", r.RemoteAddr)
+			w.WriteHeader(http.StatusNotFound)
 			return
 		}
 

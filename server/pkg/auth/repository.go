@@ -15,12 +15,13 @@ func (db *AuthRepository) GetUser(data UserModel) (UserModel, error) {
 	conn := db.DB
 	var user UserModel
 
-	query := `SELECT id, username, password FROM user
+	query := `SELECT id, username, password, is_admin FROM user
 		WHERE username=? OR email=?;`
 	err := conn.QueryRow(query, data.Username, data.Email).Scan(
 		&user.ID,
 		&user.Username,
 		&user.Password,
+		&user.IsAdmin,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {

@@ -8,12 +8,13 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func CreateToken(id string, username string) (string, error) {
+func CreateToken(id string, username string, isAdmin bool) (string, error) {
 	SECRET_KEY := os.Getenv("SECRET_KEY")
 
 	claims := TokenClaims{
 		UserId:   id,
 		Username: username,
+		IsAdmin:  isAdmin,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Minute * 15).Unix(),
 			Issuer:    "jsusmachaca",

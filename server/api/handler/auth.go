@@ -57,7 +57,7 @@ func (h *Login) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := util.CreateToken(data.ID, data.Username)
+	token, err := util.CreateToken(data.ID, data.Username, data.IsAdmin)
 	if err != nil {
 		response.JsonErrorFromString(w, "Something went wrong", http.StatusInternalServerError)
 		return

@@ -35,6 +35,7 @@ func Migrate(db *sql.DB) error {
 		first_name VARCHAR(100),
 		email VARCHAR(100),
 		password VARCHAR(100),
+		is_admin BOOL DEFAULT false,
 		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 	);`
 
