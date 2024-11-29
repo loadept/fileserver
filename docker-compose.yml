@@ -8,6 +8,7 @@ services:
       - DB_NAME=${DB_NAME}
     volumes:
       - ${VOLUME_MOUNTED}:/app/data
+      - db-data:${DB_NAME}
 
   client:
     build: client
@@ -29,3 +30,6 @@ services:
     depends_on:
       - server
       - client
+
+volumes:
+  db-data:
