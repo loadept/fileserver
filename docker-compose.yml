@@ -1,0 +1,31 @@
+services:
+  server:
+    build: server
+    environment:
+      - PORT=8080
+      - PATH_DIR=/app/data
+      - SECRET_KEY=${SECRET_KEY}
+      - DB_NAME=${DB_NAME}
+    volumes:
+      - ${VOLUME_MOUNTED}:/app/data
+
+  client:
+    build: client
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+      - SECRET_API_URL=http://localhost/api
+    extra_hosts:
+      - 'localhost:host-gateway'
+    depends_on:
+      - server
+
+  proxy:
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - '80:80'
+    depends_on:
+      - server
+      - client
