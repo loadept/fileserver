@@ -19,8 +19,10 @@ jobs:
         with:
           node-version: '22'
       - name: Install dependencies
-        run: cd client && npm clean-install
+        run: | 
+          cd client
+          npm clean-install
       - name: Lint
         run: |
-            cd client 
+            cd client
             npx astro check
