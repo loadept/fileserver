@@ -71,5 +71,5 @@ func (h *ListDir) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			},
 		)
 	}
-	response.JsonResponse(w, FileSystem, http.StatusAccepted)
+	response.JsonResponse(w, FileSystem, http.StatusOK)
 }
