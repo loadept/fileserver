@@ -14,13 +14,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Change directory
-        run: cd client && pwd && ls
       - name: Download node
         uses: actions/setup-node@v4
         with:
           node-version: '22'
       - name: Install dependencies
-        run: npm install
+        run: cd client && npm install
       - name: Lint
-        run: npx astro check
+        run: cd client && npx astro check
