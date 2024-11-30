@@ -35,7 +35,14 @@ func init() {
 
 func main() {
 	PATH_DIR := os.Getenv("PATH_DIR")
+	if PATH_DIR == "" {
+		log.Fatalln("Error, directory path not set")
+	}
+
 	PORT := os.Getenv("PORT")
+	if PORT == "" {
+		log.Fatalln("Error, port not set")
+	}
 
 	route := router.NewRouter()
 
