@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/jsusmachaca/fileserver/api/handler"
+	"github.com/jsusmachaca/go-router/pkg/router"
 )
 
 func TestFileHandle(t *testing.T) {
@@ -33,6 +34,23 @@ func TestFileHandle(t *testing.T) {
 		body := rr.Body.String()
 		if body != expected {
 			t.Errorf("handler returned unexpected body: got %s want %s", rr.Body.String(), expected)
+		}
+	})
+
+	t.Run("Directory Traversal", func(t *testing.T) {
+		hl := &handler.ListDir{PathDir: tmpDir}
+
+		route := router.NewRouter()
+		route.Get("/api/list/", hl)
+
+		req, _ := http.NewRequest("GET", "/api/list/../../../../../../../../../../../../../../etc", nil)
+		req.Host = "localhost:8080"
+		rr := httptest.NewRecorder()
+
+		route.ServeMux.ServeHTTP(rr, req)
+
+		if status := rr.Code; status != http.StatusMovedPermanently {
+			t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusMovedPermanently)
 		}
 	})
 
