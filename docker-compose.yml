@@ -7,7 +7,7 @@ services:
       - SECRET_KEY=${SECRET_KEY}
       - DB_NAME=${DB_NAME}
     volumes:
-      - ${VOLUME_MOUNTED}:/app/data
+      - ${PATH_STORAGE}:/app/data
       - db-data:/app
 
   client:
