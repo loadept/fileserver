@@ -122,7 +122,6 @@ const uploadButton = document.getElementById('upload-button')!
 const fileInput = document.getElementById('file-upload') as HTMLInputElement
   
 uploadButton.addEventListener('click', () => {
-  console.log(modal)
   if (modal) {
     modal.classList.remove('hidden')
   }
@@ -148,18 +147,21 @@ uploadForm?.addEventListener('submit', async (e) => {
 
     let url: string
     if (path === '') {
-      url = 'api/upload'
+      url = '/api/upload'
     } else {
-      url = `api/upload?directory=${path}`
+      url = `/api/upload/${path}`
     }
-    console.log(url)
+
     const { data } = await axios.post(url, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     })
-    console.log(data)
+
     modal.classList.add('hidden')
+    if (data.message) {
+      window.location.reload()
+    }
   } catch (err) {
     if (err instanceof AxiosError) {
       console.error(err.response?.data)
