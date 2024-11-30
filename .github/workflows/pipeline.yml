@@ -53,9 +53,9 @@ jobs:
       - name: Deploy app
         uses: appleboy/ssh-action@master
         env:
-          - SECRET_KEY=${{ secrets.SECRET_KEY }}
-          - DB_NAME=${{ secrets.DB_NAME }}
-          - VOLUME_MOUNTED=${{ secrets.VOLUME_MOUNTED }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          VOLUME_MOUNTED: ${{ secrets.VOLUME_MOUNTED }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           user: ${{ secrets.SERVER_USER }}
