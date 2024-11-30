@@ -2,7 +2,7 @@ name: Deploy on server
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "master" ]
 
 jobs:
   check:
