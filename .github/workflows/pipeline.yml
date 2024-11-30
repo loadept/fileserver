@@ -66,5 +66,7 @@ jobs:
             echo "DB_NAME=$DB_NAME"
             echo "VOLUME_MOUNTED=$VOLUME_MOUNTED"
             cd Tasks/fileserver
+            git pull
             docker compose down
             docker compose up --build -d
+            docker system prune
