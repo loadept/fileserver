@@ -49,9 +49,9 @@ func (h *UploadFiles) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		response.JsonErrorFromString(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-	log.Printf("File uploaded for %s", r.RemoteAddr)
 
+	log.Printf("File uploaded for %s in directory /%s", r.RemoteAddr, directory)
 	response.JsonResponse(w, map[string]string{
-		"message": "file uploaded " + header.Filename,
-	}, http.StatusAccepted)
+		"message": "File uploaded " + header.Filename,
+	}, http.StatusOK)
 }
