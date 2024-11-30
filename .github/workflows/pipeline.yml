@@ -68,5 +68,7 @@ jobs:
             cd Tasks/fileserver
             git pull
             docker compose down
+            docker compose pull
             docker compose up --build -d
             docker system prune -f
+            echo $VOLUME_MOUNTED > volume.txt
