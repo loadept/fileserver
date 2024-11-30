@@ -40,6 +40,6 @@ jobs:
           go mod tidy
 
       - name: Testing server
-        run:
+        run: |
           cd server
           go test ./test/... -v | tee test.log
