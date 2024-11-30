@@ -1,3 +1,10 @@
 {
-    "svg.preview.background": "editor"
+    "svg.preview.background": "editor",
+    "workbench.iconTheme": "material-icon-theme",
+    "material-icon-theme.files.associations": {
+        "*_test.go": "test-ts"
+    },
+    "material-icon-theme.folders.associations": {
+        "internal": "private"
+    }   
 }
