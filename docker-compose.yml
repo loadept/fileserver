@@ -15,7 +15,7 @@ services:
     environment:
       - HOST=0.0.0.0
       - PORT=3000
-      - SECRET_API_URL=http://localhost/api
+      - SECRET_API_URL=http://${SERVER_IP}/api
     extra_hosts:
       - 'localhost:host-gateway'
     depends_on:
