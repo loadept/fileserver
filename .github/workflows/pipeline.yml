@@ -51,7 +51,7 @@ jobs:
 
     steps:
       - name: Deploy app
-        uses: appleboy/ssh-action
+        uses: appleboy/ssh-action@master
         env:
           - SECRET_KEY=${{ secrets.SECRET_KEY }}
           - DB_NAME=${{ secrets.DB_NAME }}
