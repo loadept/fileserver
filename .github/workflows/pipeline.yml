@@ -58,7 +58,7 @@ jobs:
           VOLUME_MOUNTED: ${{ secrets.VOLUME_MOUNTED }}
         with:
           host: ${{ secrets.SERVER_HOST }}
-          user: ${{ secrets.SERVER_USER }}
+          username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           envs: SECRET_KEY,DB_NAME,VOLUME_MOUNTED
           script: |
