@@ -62,7 +62,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           envs: SECRET_KEY,DB_NAME,VOLUME_MOUNTED
           script: |
-            echo "SECRET_KEY=$SECRET_KEY"
+            echo "SECRET_KEY=${#SECRET_KEY}"
             echo "DB_NAME=$DB_NAME"
             echo "VOLUME_MOUNTED=$VOLUME_MOUNTED"
             cd Tasks/fileserver
