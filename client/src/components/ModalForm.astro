@@ -1,0 +1,13 @@
+---
+interface Props {
+  idModal: string
+}
+
+const { idModal } = Astro.props
+---
+
+<div id={idModal} class='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden'>
+  <div class='bg-slate-800 p-4 rounded-lg max-w-3xl max-h-[90vh] overflow-auto'>
+    <slot />
+  </div>
+</div>

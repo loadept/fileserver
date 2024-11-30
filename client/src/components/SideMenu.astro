@@ -38,6 +38,7 @@ const { directories } = Astro.props
 <script>
   const sideMenu = document.getElementById('side-menu')
   const mainContent = document.getElementById('main-content')
+  const uploadButton = document.getElementById('upload-button')
   const toggleMenuButton = document.getElementById('toggle-menu')
   const buttonDir = document.querySelectorAll('#button-dir')
 
@@ -49,6 +50,8 @@ const { directories } = Astro.props
     sideMenu!.classList.toggle('w-16')
     mainContent!.classList.toggle('ml-64')
     mainContent!.classList.toggle('ml-10')
+    uploadButton!.classList.toggle('left-24')
+    uploadButton!.classList.toggle('left-72')
 
     if (isOpen) {
       toggleMenuButton!.innerHTML = `
