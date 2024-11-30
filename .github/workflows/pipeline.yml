@@ -65,7 +65,7 @@ jobs:
             export SECRET_KEY=$SECRET_KEY
             export DB_NAME=$DB_NAME
             export VOLUME_MOUNTED=$VOLUME_MOUNTED
-
+            env
             cd Tasks/fileserver
             git pull
             echo $DB_NAME > db.txt
