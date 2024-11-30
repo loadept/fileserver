@@ -42,4 +42,26 @@ jobs:
       - name: Testing server
         run: |
           cd server
-          go test ./test/... -v | tee test.log
+          go test ./test/... -v
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: check
+    if: success()
+
+    steps:
+      - name: Deploy app
+        uses: appleboy/ssh-action
+        env:
+          - SECRET_KEY=${{ secrets.SECRET_KEY }}
+          - DB_NAME=${{ secrets.DB_NAME }}
+          - VOLUME_MOUNTED=${{ secrets.VOLUME_MOUNTED }}
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          user: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.KEY }}
+          envs: SECRET_KEY,DB_NAME,VOLUME_MOUNTED
+          script: |
+            cd Tasks/fileserver
+            docker compose down
+            docker compose up --build -d
