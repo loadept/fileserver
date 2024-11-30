@@ -56,19 +56,17 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           DB_NAME: ${{ secrets.DB_NAME }}
           VOLUME_MOUNTED: ${{ secrets.VOLUME_MOUNTED }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          envs: SECRET_KEY,DB_NAME,VOLUME_MOUNTED
+          envs: SECRET_KEY,DB_NAME,VOLUME_MOUNTED,DOCKER_USER,DOCKER_PASSWORD
           script: |
-            export SECRET_KEY=$SECRET_KEY
-            export DB_NAME=$DB_NAME
-            export VOLUME_MOUNTED=$VOLUME_MOUNTED
-            env
+            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
             cd Tasks/fileserver
             git pull
-            echo $DB_NAME > db.txt
             docker compose down
             docker compose up --build -d
             docker system prune -f
