@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro"
 import apiClient from "../../../config/apiClient"
-
+import { AxiosError } from "axios"
 
 export const POST: APIRoute = async ({ params, request }) => {
   try {
@@ -18,8 +18,6 @@ export const POST: APIRoute = async ({ params, request }) => {
       }
     })
 
-    console.log(response)
-
     return new Response(
       JSON.stringify({
         message: 'Success'
@@ -27,7 +25,11 @@ export const POST: APIRoute = async ({ params, request }) => {
       { status: 200 }
     )
   } catch (err) {
-    console.error((err as Error).message)
+    if (err instanceof AxiosError) {
+      console.error(err.response?.data)
+    } else {
+      console.error((err as Error).message)
+    }
     return new Response(
       JSON.stringify({
         error: 'Internal server error'

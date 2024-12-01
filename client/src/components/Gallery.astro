@@ -54,14 +54,16 @@ const { resources, token } = Astro.props
           `<img src='${itemData.url}?token=${token}' alt='${itemData.text || itemData.text}' class='max-w-full h-auto rounded-lg' />`
         ) : itemData.type === 'video' ? (
           `<video src='${itemData.url}?token=${token}' controls class='max-w-full h-auto rounded-lg' />`
-        ) : (
+        ) : itemData.type === 'readable' ? (
+          `<iframe src='${itemData.url}?token=${token}' class='w-[700px] h-[500px] rounded-lg' target='_blank' frameborder='0'></iframe>`
+        ): (
           `<div class='flex flex-col items-center'>
             <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='w-12 h-12'>
               <path d='M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z'></path>
               <polyline points='13 2 13 9 20 9'></polyline>
             </svg>
             <p class='mt-4 text-lg font-semibold text-gray-100'>${itemData.text}</p>
-            <a href='${itemData.url}?token=${token}' download target='_blank' class='mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors'>
+            <a href='${itemData.url}?token=${token}' download target='_blank' class='mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors outline-none'>
               Descargar archivo
             </a>
           </div>`
