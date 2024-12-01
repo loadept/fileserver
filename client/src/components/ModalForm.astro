@@ -69,9 +69,9 @@
   
       let url: string
       if (path === '') {
-        url = '/api/upload'
+        url = '/astro-api/upload'
       } else {
-        url = `/api/upload/${path}`
+        url = `/astro-api/upload/${path}`
       }
   
       const { data } = await axios.post(url, formData, {

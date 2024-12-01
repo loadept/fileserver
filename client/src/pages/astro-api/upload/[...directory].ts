@@ -11,7 +11,7 @@ export const POST: APIRoute = async ({ params, request }) => {
     const cookies = request.headers.get('cookie') || '';
     const token = cookies.split('=')[1]
 
-    const { data: response } = await apiClient.put(`fs/upload?directory=${directory}`, data, {
+    await apiClient.put(`/fs/upload?directory=${directory}`, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${token}`
