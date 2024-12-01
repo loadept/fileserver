@@ -10,7 +10,7 @@ if (cookie?.value) {
 
 const result = Astro.getActionResult(actions.login)
 if (result && !result!.error) {
-	const expires = new Date(Date.now() + 15 * 60 * 1000);
+	const expires = new Date(Date.now() + 10 * 60 * 60 * 1000)
 
 	Astro.cookies.set('Authentication', result?.data?.token, {
 		expires: expires
