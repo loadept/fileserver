@@ -1,6 +1,6 @@
 ---
-import LoginForm from '../components/LoginForm.astro';
-import Layout from '../layouts/Layout.astro';
+import LoginForm from '@core/LoginForm.astro';
+import Layout from '@layout/Layout.astro';
 import { actions } from 'astro:actions';
 
 const cookie = Astro.cookies.get('Authentication')

@@ -1,8 +1,8 @@
 ---
-import type { Resource } from '../types/props'
-import FileItem from './FileItem.astro'
-import ArrowLeftIcon from './icons/ArrowLeftIcon.astro'
-import ArrowRightIcon from './icons/ArrowRightIcon.astro'
+import type { Resource } from '@type/props'
+import FileItem from '@core/FileItem.astro'
+import ArrowLeftIcon from '@icon/ArrowLeftIcon.astro'
+import ArrowRightIcon from '@icon/ArrowRightIcon.astro'
 import Modal from './Modal.astro'
 
 interface Props {
@@ -50,12 +50,37 @@ const { resources, token } = Astro.props
     item.addEventListener('click', () => {
       const itemData = JSON.parse(item.getAttribute('data-item')!)
       if (modal && modalContent) {
+        const tokenQuery = `?token=${token}`
         modalContent.innerHTML = itemData.type === 'image' ? (
-          `<img src='${itemData.url}?token=${token}' alt='${itemData.text || itemData.text}' class='max-w-full h-auto rounded-lg' />`
+          `<img src='${itemData.url}${tokenQuery}' alt='${itemData.text}' class='max-w-full h-auto rounded-lg' />
+          <div class="mt-4 flex justify-center space-x-4">
+            <a href='${itemData.url}${tokenQuery}' download='${itemData.text}' class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+              Descargar
+            </a>
+            <a href='${itemData.url}${tokenQuery}' target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+              Abrir
+            </a>
+          </div>`
         ) : itemData.type === 'video' ? (
-          `<video src='${itemData.url}?token=${token}' controls class='max-w-full h-auto rounded-lg' />`
+          `<video src='${itemData.url}${tokenQuery}' controls class='max-w-full h-auto rounded-lg'></video>
+          <div class="mt-4 flex justify-center space-x-4">
+            <a href='${itemData.url}${tokenQuery}' download='${itemData.text}' class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+              Descargar
+            </a>
+            <a href='${itemData.url}${tokenQuery}' target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+              Abrir
+            </a>
+          </div>`
         ) : itemData.type === 'readable' ? (
-          `<iframe src='${itemData.url}?token=${token}' class='w-[700px] h-[500px] rounded-lg' target='_blank' frameborder='0'></iframe>`
+          `<iframe src='${itemData.url}${tokenQuery}' class='w-[700px] h-[500px] rounded-lg' frameborder='0'></iframe>
+          <div class="mt-4 flex justify-center space-x-4">
+            <a href='${itemData.url}${tokenQuery}' download='${itemData.text}' class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+              Descargar
+            </a>
+            <a href='${itemData.url}${tokenQuery}' target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+              Abrir
+            </a>
+          </div>`
         ): (
           `<div class='flex flex-col items-center'>
             <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='w-12 h-12'>
@@ -63,8 +88,10 @@ const { resources, token } = Astro.props
               <polyline points='13 2 13 9 20 9'></polyline>
             </svg>
             <p class='mt-4 text-lg font-semibold text-gray-100'>${itemData.text}</p>
-            <a href='${itemData.url}?token=${token}' download target='_blank' class='mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors outline-none'>
-              Descargar archivo
+          </div>
+          <div class="mt-4 flex justify-center space-x-4">
+            <a href='${itemData.url}${tokenQuery}' download='${itemData.text}' class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+              Descargar
             </a>
           </div>`
         )

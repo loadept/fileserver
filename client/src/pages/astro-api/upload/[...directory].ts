@@ -1,6 +1,6 @@
-import type { APIRoute } from "astro"
-import apiClient from "../../../config/apiClient"
-import { AxiosError } from "axios"
+import type { APIRoute } from 'astro'
+import apiClient from '@config/apiClient'
+import { AxiosError } from 'axios'
 
 export const POST: APIRoute = async ({ params, request }) => {
   try {

@@ -1,11 +1,11 @@
 ---
-import Layout from '../../layouts/Layout.astro'
-import type { FileSystemResponse } from "../../types/global"
-import Gallery from '../../components/Gallery.astro'
-import SideMenu from "../../components/SideMenu.astro"
-import apiClient from '../../config/apiClient'
-import UploadIcon from '../../components/icons/UploadIcon.astro'
-import ModalForm from '../../components/ModalForm.astro'
+import Layout from '@layout/Layout.astro'
+import type { FileSystemResponse } from '@type/global'
+import Gallery from '@core/Gallery.astro'
+import SideMenu from '@core/SideMenu.astro'
+import apiClient from '@config/apiClient'
+import UploadIcon from '@icon/UploadIcon.astro'
+import ModalForm from '@core/ModalForm.astro'
 
 const cookie = Astro.cookies.get('Authentication')
 if (!cookie?.value) {
