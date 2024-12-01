@@ -17,6 +17,7 @@ func CreateToken(id string, username string, isAdmin bool) (string, error) {
 		IsAdmin:  isAdmin,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 10).Unix(),
+			IssuedAt:  time.Now().Unix(),
 			Issuer:    "jsusmachaca",
 		},
 	}
