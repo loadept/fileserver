@@ -8,7 +8,7 @@ services:
       - DB_NAME=${DB_NAME}
     volumes:
       - ${PATH_STORAGE}:/app/data
-      - db-data:/app
+      - db-data:/app/databases
 
   client:
     build: client
