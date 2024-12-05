@@ -20,7 +20,7 @@ jobs:
           node-version: '22'
 
       - name: Install dependencies
-        run: | 
+        run: |
           cd client
           npm ci
 
