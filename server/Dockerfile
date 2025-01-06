@@ -13,11 +13,11 @@ RUN go mod tidy
 
 RUN go build cmd/server/main.go
 
-FROM golang:1.23.3-alpine3.20
+FROM alpine:3.20
 
 RUN apk update && \
-    apk add --no-cache sqlite
-
+    apk add --no-cache sqlite ca-certificates
+  
 WORKDIR /app
 
 COPY --from=build /app/main .
